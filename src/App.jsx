@@ -3,6 +3,7 @@ import GlobalStyles from './styles/GlobalStyles';
 import Button from './ui/Button';
 import Input from './ui/Input';
 import Heading from './ui/Heading';
+import Row from './ui/Row';
 
 // USING STYLED COMPONENTS
 const StyledApp = styled.div`
@@ -15,15 +16,26 @@ function App() {
     <>
       <GlobalStyles />
       <StyledApp>
-        <Heading as="h1">Hello World</Heading>
+        <Row type="vertical">
+          <Row type="horizontal">
+            <Heading as="h1">Hello World</Heading>
 
-        <Heading as="h2">Check in & Out</Heading>
-        <Button onClick={() => alert('Check in')}>Check in</Button>
-        <Button onClick={() => alert('Check out')}>Check out</Button>
+            <div>
+              <Heading as="h2">Check in & Out</Heading>
+              <Button onClick={() => alert('Check in')}>Check in</Button>
+              <Button variation="secondary" onClick={() => alert('Check out')}>
+                Check out
+              </Button>
+            </div>
+          </Row>
 
-        <Heading as="h3">Form</Heading>
-
-        <Input type="number" placeholder="Number of guests"></Input>
+          <Row type="vertical">
+            <div>
+              <Heading as="h3">Form</Heading>
+              <Input type="number" placeholder="Number of guests"></Input>
+            </div>
+          </Row>
+        </Row>
       </StyledApp>
     </>
   );
