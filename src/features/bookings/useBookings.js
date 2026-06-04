@@ -18,18 +18,23 @@ export default function useBookings() {
   const [field, direction] = sortByRaw.split('-');
   const sortBy = { field, direction };
 
+  // 3. Pagination
+  const page = !searchParams.get('page') ? 1 : Number(searchParams.get('page'));
+
+  // Getting the count with supabase count option adds delay, so need to initislize with an empty object
   const {
     isLoading,
-    data: bookings,
+    data: { data: bookings, count } = {},
     error,
   } = useQuery({
-    queryKey: ['bookings', filter, sortBy],
-    queryFn: () => getBookings({ filter, sortBy }),
+    queryKey: ['bookings', filter, sortBy, page],
+    queryFn: () => getBookings({ filter, sortBy, page }),
   });
 
   return {
     bookings,
     isLoading,
     error,
+    count,
   };
 }

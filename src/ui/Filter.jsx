@@ -41,6 +41,8 @@ function Filter({ filterField, options }) {
 
   function handleClick(value) {
     searchParams.set(filterField, value);
+    // Necessary or else the pagination breaks (trying to access a page that doesnt exist in another filter field ex. Filter A has 3 pages, you select the second one, and then go to Filter B, which only has 1 page)
+    searchParams.delete('page');
     setSearchParams(searchParams);
   }
 
