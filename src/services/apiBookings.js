@@ -1,12 +1,23 @@
 import { getToday } from '../utils/helpers';
 import supabase from './supabase';
 
-export async function getBookings() {
-  const { data, error } = await supabase
+export async function getBookings({ filter, sortBy }) {
+  let query = supabase
     .from('bookings')
     .select(
       'id, created_at, start_date, end_date, num_nights, num_guests, status, total_price, cabins(name), guests(full_name, email)'
     );
+
+  // Add filter
+  if (filter !== null) query = query.eq(filter.field, filter.value);
+
+  // Add Sort
+  if (sortBy)
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === 'asc',
+    });
+
+  const { data, error } = await query;
 
   if (error) {
     console.error(error);
@@ -35,7 +46,7 @@ export async function getBooking(id) {
 export async function getBookingsAfterDate(date) {
   const { data, error } = await supabase
     .from('bookings')
-    .select('created_at, totalPrice, extrasPrice')
+    .select('created_at, total_price, extras_price')
     .gte('created_at', date)
     .lte('created_at', getToday({ end: true }));
 
@@ -53,8 +64,8 @@ export async function getStaysAfterDate(date) {
     .from('bookings')
     // .select('*')
     .select('*, guests(full_name)')
-    .gte('startDate', date)
-    .lte('startDate', getToday());
+    .gte('start_date', date)
+    .lte('start_date', getToday());
 
   if (error) {
     console.error(error);
@@ -70,13 +81,13 @@ export async function getStaysTodayActivity() {
     .from('bookings')
     .select('*, guests(full_name, nationality, country_flag)')
     .or(
-      `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
+      `and(status.eq.unconfirmed,start_date.eq.${getToday()}),and(status.eq.checked-in,end_date.eq.${getToday()})`
     )
     .order('created_at');
 
   // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
-  // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
-  // (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
+  // (stay.status === 'unconfirmed' && isToday(new Date(stay.start_date))) ||
+  // (stay.status === 'checked-in' && isToday(new Date(stay.end_date)))
 
   if (error) {
     console.error(error);
