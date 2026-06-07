@@ -43,12 +43,10 @@ export async function createEditCabin(newCabin, id = null) {
 
   // EDIT
   if (id) {
-    console.log('editing');
     query = query.update({ ...newCabin, image: imagePath }).eq('id', id);
   }
   // CREATE
   else {
-    console.log('creating');
     query = query.insert([{ ...newCabin, image: imagePath }]);
   }
 
@@ -67,7 +65,6 @@ export async function createEditCabin(newCabin, id = null) {
 
     // 3. Delete the cabin if theres an error uploading the image
     if (storageError) {
-      console.log(storageError);
       await supabase.from('cabins').delete().eq('id', data.id);
       throw new Error(
         'Cabin image could not be uploaded and the cabin was not created'

@@ -6,7 +6,6 @@ export default function useOutsideClick(close, listenCapturing = true) {
   useEffect(() => {
     function handleClickEvent(e) {
       if (ref.current && !ref.current.contains(e.target)) {
-        console.log('clicked outside modal');
         close();
       }
     }

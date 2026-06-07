@@ -94,8 +94,6 @@ function CreateCabinForm() {
             valueAsNumber: true,
             validate: (value, formValues) => {
               // Need to convert to number for correct comparison
-              console.log('value: ', value);
-              console.log('formValues: ', formValues);
               return (
                 value <= formValues.regular_price ||
                 'Discount should be less than regular price'

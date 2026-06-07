@@ -27,8 +27,6 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const isWorking = isCreating || isEditing;
 
   function onSubmit(data) {
-    console.log(data);
-
     let image =
       typeof data.image === 'object' && data.image.length > 0
         ? data.image[0]
