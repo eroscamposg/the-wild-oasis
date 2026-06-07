@@ -37,8 +37,6 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
-  // const [showForm, setShowForm] = useState(false);
-
   const {
     id: cabinId,
     name,
