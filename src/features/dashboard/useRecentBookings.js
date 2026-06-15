@@ -19,6 +19,7 @@ export function useRecentBookings() {
 
   return {
     bookings,
+    numDays,
     isLoading,
   };
 }
